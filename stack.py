@@ -8,33 +8,33 @@ class Stack:
         self.top = None
         self._size = 0
 
-    def isempty(self):
-        if self.top == None:
-            return True
-        else:
-            return False
-    
-    def peek(self):
-        if self.isempty() == False:
-            return self.top
-
-    def push(self, value:int):
+    def push(self, value):
         node = Node(value)
         node.next = self.top
         self.top = node
-
-        self._size += 1 
+        self._size += 1
 
     def pop(self):
-        if self.isempty():
-            print("Stack is empty.")
-        
-        node = self.top
-        self.top = self.top.next
-        self._size -= 1
-
-        return node
+        if not self.is_empty():  
+            node = self.top.data
+            self.top = self.top.next
+            popped_value = node.data
+            self._size -= 1
+            return popped_value 
+        return None
     
-    def printall(self):
-        current = self.top
+    def is_empty(self):
+        return self.top == None
+    
+    def peek(self):
+        if not self.is_empty():
+            return self.top.data
         
+    def size(self):
+        return self._size
+    
+    def printstack(self):
+        node = self.top
+        while node != None:
+            print(node.data)
+            node = node.next
