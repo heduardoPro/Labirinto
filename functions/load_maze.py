@@ -1,9 +1,11 @@
 def load_maze_file(filename):
-        maze_data = []
-        with open(filename, "r") as file:
-            for line in file:
-                maze_data.append(list(line.strip()))
-        return maze_data
+    maze_list = []
+    with open(filename, "r") as file:
+        text = file.readline()
+        text = text.split(" ")
+        for line in file:
+            maze_list.append(list(line.strip()))
+        return maze_list
 
 """
 maze_file = "maze.txt"

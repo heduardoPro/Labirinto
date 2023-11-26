@@ -15,12 +15,10 @@ class Stack:
         self._size += 1
 
     def pop(self):
-        if not self.is_empty():  
-            node = self.top.data
+        if not self.is_empty():
+            popped_item = self.top.data
             self.top = self.top.next
-            popped_value = node.data
-            self._size -= 1
-            return popped_value 
+            return popped_item
         return None
     
     def is_empty(self):
