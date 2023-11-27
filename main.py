@@ -25,7 +25,10 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("League of Labyrinths")
 pygame.display.set_icon(lol_icon)
 
-maze_data = load_maze_file("maze.txt")
+# maze_data = load_maze_file("vitor.txt")
+# maze_data = load_maze_file("maze.txt")
+maze_data = load_maze_file("willian.txt")
+# maze_data = load_maze_file("lucas.txt")
 
 twitch_start_x, twitch_start_y = find_position_twitch(maze_data)
 lulu_end_x, lulu_end_y = find_position_lulu(maze_data)
@@ -59,30 +62,33 @@ def backtracking(maze_data, twitch_position_x, twitch_position_y, lulu_position_
         position = (twitch_position_x, twitch_position_y)
 
         # verifica se é possivel mover para direita
-        # verifica se a próxima posição contém um caminho livre "0" ou se já é a posição da lulu(saída) "E" nao permitinod que o proximo movimento seja um caminho visitado
+        # verifica se a próxima posição contém um caminho livre "0" ou se já é a posição da lulu(saída) "E" nao permite que o proximo movimento seja um caminho visitado
         if position_is_valid(twitch_position_x + 1, twitch_position_y) and maze_data[twitch_position_y][twitch_position_x + 1] in ["0", "E"] and (twitch_position_x + 1, twitch_position_y) not in paths_visited:
             twitch_position_x += 1
             # Empilha o movimento nas pilhas 
             paths_visited.append((twitch_position_x, twitch_position_y))
             right_route.append(position)
 
+        # Esquerda
         elif position_is_valid(twitch_position_x - 1, twitch_position_y) and maze_data[twitch_position_y][twitch_position_x - 1] in ["0", "E"] and (twitch_position_x - 1, twitch_position_y) not in paths_visited:
             twitch_position_x -= 1
             paths_visited.append((twitch_position_x, twitch_position_y))
             right_route.append(position)
 
+        # Baixo 
         elif position_is_valid(twitch_position_x, twitch_position_y + 1) and maze_data[twitch_position_y + 1][twitch_position_x] in ["0", "E"] and (twitch_position_x, twitch_position_y + 1) not in paths_visited:
             twitch_position_y += 1
             paths_visited.append((twitch_position_x, twitch_position_y))
             right_route.append(position)
 
+        # Cima
         elif position_is_valid(twitch_position_x, twitch_position_y - 1) and maze_data[twitch_position_y - 1][twitch_position_x] in ["0", "E"] and (twitch_position_x, twitch_position_y - 1) not in paths_visited:
             twitch_position_y -= 1
             paths_visited.append((twitch_position_x, twitch_position_y))
             right_route.append(position)
         else:
             if not right_route:
-                break  # Evitar pop de lista vazia
+                break  # Evita o pop de lista vazia
             last_position = right_route.pop()
             twitch_position_x, twitch_position_y = last_position
 
@@ -117,7 +123,7 @@ while status:
             correct_path_stack.append(path)  # pilha do caminho correto
             draw_path(screen, [path], GREEN)
             pygame.display.flip()
-            time.sleep(0.2)
+            time.sleep(0.1)
 
         twitch_x, twitch_y = correct_path[-1] if len(correct_path) < 0 else visiteds_path[-1]
         screen.blit(twitch_image, (twitch_x * CELL_SIZE, twitch_y * CELL_SIZE))
