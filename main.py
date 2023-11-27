@@ -1,9 +1,7 @@
 import pygame
-import os
 import sys
 import time
 from settings import *
-from stack import Stack
 from functions.load_maze import load_maze_file
 from functions.positions import find_position_twitch, find_position_lulu
 
@@ -34,7 +32,25 @@ maze_data = load_maze_file("maze.txt")
 twitch_start_x, twitch_start_y = find_position_twitch(maze_data)
 lulu_end_x, lulu_end_y = find_position_lulu(maze_data)
 
-def maze_solve(maze_data, twitch_position_x, twitch_position_y, lulu_position_x, lulu_position_y):
+def draw(screen, maze_data, lulu_image, twitch_x, twitch_y, lulu_x, lulu_y):
+    screen.fill(WHITE)
+    for row in range(len(maze_data)):
+        for column in range(len(maze_data[row])):
+            cell = maze_data[row][column]
+            if cell == "1":  # Parede
+                pygame.draw.rect(screen, BLACK, (column * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+            elif cell == "0":  # Caminho
+                pygame.draw.rect(screen, WHITE, (column * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+            elif cell == "M":
+                screen.blit(twitch_image, (twitch_x * CELL_SIZE, twitch_y * CELL_SIZE))
+            elif cell == "E":
+                screen.blit(lulu_image, (lulu_x * CELL_SIZE, lulu_y * CELL_SIZE))
+
+def draw_path(screen, path, color):
+    for position in path:
+        pygame.draw.rect(screen, color, (position[0] * CELL_SIZE, position[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
+
+def backtracking(maze_data, twitch_position_x, twitch_position_y, lulu_position_x, lulu_position_y):
     paths_visited = []
     right_route = []
 
@@ -71,25 +87,6 @@ def maze_solve(maze_data, twitch_position_x, twitch_position_y, lulu_position_x,
 
     return right_route, paths_visited
 
-def draw(screen, maze_data, lulu_image, twitch_x, twitch_y, lulu_x, lulu_y):
-    screen.fill(WHITE)
-    for row in range(len(maze_data)):
-        for column in range(len(maze_data[row])):
-            cell = maze_data[row][column]
-            if cell == "1":  # Parede
-                pygame.draw.rect(screen, BLACK, (column * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-            elif cell == "0":  # Caminho
-                pygame.draw.rect(screen, WHITE, (column * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-            elif cell == "M":
-                screen.blit(twitch_image, (twitch_x * CELL_SIZE, twitch_y * CELL_SIZE))
-            elif cell == "E":
-                screen.blit(lulu_image, (lulu_x * CELL_SIZE, lulu_y * CELL_SIZE))
-
-def draw_path(screen, path, color):
-    for position in path:
-        pygame.draw.rect(screen, color, (position[0] * CELL_SIZE, position[1] * CELL_SIZE, CELL_SIZE, CELL_SIZE))
-
-
 visiteds_path_stack = [] 
 correct_path_stack = []  
 
@@ -106,7 +103,7 @@ while status:
         time.sleep(0.1)
         status = False
 
-    correct_path, visiteds_path = maze_solve(maze_data, twitch_start_x, twitch_start_y, lulu_end_x, lulu_end_y)
+    correct_path, visiteds_path = backtracking(maze_data, twitch_start_x, twitch_start_y, lulu_end_x, lulu_end_y)
     if len(correct_path) > 0 or len(visiteds_path) > 0:
 
         for path in visiteds_path:
@@ -121,14 +118,13 @@ while status:
             pygame.display.flip()
             time.sleep(0.2)
 
-        # Desenha o Twitch quando encontra o Lulu na ultima posição
         twitch_x, twitch_y = correct_path[-1] if len(correct_path) < 0 else visiteds_path[-1]
         screen.blit(twitch_image, (twitch_x * CELL_SIZE, twitch_y * CELL_SIZE))
         pygame.display.flip()
 
         time.sleep(0.1)  
 
-# Exibir as pilhas no final
+
 print("Caminho Correto:")
 for position in correct_path_stack:
     print(position)
@@ -138,5 +134,5 @@ for position in visiteds_path_stack:
     print(position)
 
 pygame.quit()
-#os.system('cls' if os.name == 'nt' else 'clear')
 sys.exit()
+

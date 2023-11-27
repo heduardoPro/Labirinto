@@ -41,4 +41,5 @@ O projeto da displina EDL - consiste em criar um labirinto com interface gráfic
 - 3 - A função **load_maze** é chamada para ler as linhas do arquivo.txt que contém as dimensões e coordenadas do labirinto.
 - 4 - Após a função **draw_maze** é chamada para desenhar o labirinto de acordo com os dados armazenados.
 - 5 - O algoritmo Backtracking é implementado para solucionar o labirinto
+- 6 - Depois de finalizado o progama é finalizado.
 
