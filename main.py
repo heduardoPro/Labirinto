@@ -18,8 +18,6 @@ lulu_image = pygame.transform.scale(lulu, (CELL_SIZE, CELL_SIZE))
 
 # Sons
 pygame.mixer.music.load("assets/sound/initial.mp3")
-som_souEU = pygame.mixer.Sound("assets/sound/souEU.mp3")
-som_souEU.set_volume(0.5)
 pygame.mixer.music.set_volume(0.5)
 pygame.mixer.music.play(-1)
 
@@ -60,8 +58,11 @@ def backtracking(maze_data, twitch_position_x, twitch_position_y, lulu_position_
     while (twitch_position_x, twitch_position_y) != (lulu_position_x, lulu_position_y):
         position = (twitch_position_x, twitch_position_y)
 
+        # verifica se é possivel mover para direita
+        # verifica se a próxima posição contém um caminho livre "0" ou se já é a posição da lulu(saída) "E" nao permitinod que o proximo movimento seja um caminho visitado
         if position_is_valid(twitch_position_x + 1, twitch_position_y) and maze_data[twitch_position_y][twitch_position_x + 1] in ["0", "E"] and (twitch_position_x + 1, twitch_position_y) not in paths_visited:
             twitch_position_x += 1
+            # Empilha o movimento nas pilhas 
             paths_visited.append((twitch_position_x, twitch_position_y))
             right_route.append(position)
 

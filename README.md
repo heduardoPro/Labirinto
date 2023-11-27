@@ -43,3 +43,7 @@ O projeto da displina EDL - consiste em criar um labirinto com interface gráfic
 - 5 - O algoritmo Backtracking é implementado para solucionar o labirinto
 - 6 - Depois de finalizado o progama é finalizado.
 
+## Algoritmo de Busca de profundidade(Backtracking)
+- Inicializa com duas pilhas vázias para vistados e correto.
+- Verifica se a posição atual é válida dentro do labirinto e empilha dentro da pilha de caminhos visitados
+- Para cada movimento, verifca se a nova posição é válida e define os movimentos que podem ser realizados(direita, esquerda, baixo, cima)
